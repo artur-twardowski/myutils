@@ -1,0 +1,41 @@
+set nocompatible
+syntax on
+set nowrap
+set encoding=utf8
+set hidden
+set number
+set ruler
+set tabstop=4
+set shiftwidth=4
+set smarttab
+set expandtab
+set listchars=tab:>·,space:·,extends:>,precedes:<
+set list
+set showcmd
+set laststatus=2
+set report=0
+set cursorline
+set guifont=DejaVu\ Sans\ Mono\ 12
+set lsp=4
+set guioptions-=m
+set guioptions-=T
+set guioptions-=r
+
+set completeopt=menuone,popup
+
+map <C-h>      :bp<CR>
+map <C-l>      :bn<CR>
+map <C-x>      :bd<CR>
+map <C-j>      :ls<CR>:b
+map <F9>       :set cursorline!<CR>
+map <F10>      :set number!<CR>
+map <F11>      :set wrap!<CR>
+
+inoremap <C-v>      <ESC>"+Pa
+nnoremap gc         :e ~/.vimrc<CR>
+nnoremap gs         :colorscheme 
+vnoremap grs        !awk '{ s += $1 } END { print s }'<CR>
+vnoremap gra        !awk '{ s += $1; c += 1 } END { print s/c }'<CR>
+vnoremap gys        !awk '{ s += $1 } END { print s }'<CR>y$u:echo "Sum = <C-r>""<CR>
+vnoremap gya        !awk '{ s += $1; c += 1 } END { print s/c }'<CR>y$u:echo "Average = <C-r>""<CR>
+
