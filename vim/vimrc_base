@@ -6,7 +6,7 @@ set hidden
 set number
 set ruler
 set tabstop=4
-set shiftwidth=4
+"set shiftwidth=4
 set smarttab
 set expandtab
 set listchars=tab:>·,space:·,extends:>,precedes:<
@@ -15,11 +15,18 @@ set showcmd
 set laststatus=2
 set report=0
 set cursorline
-set guifont=DejaVu\ Sans\ Mono\ 12
-set lsp=4
-set guioptions-=m
-set guioptions-=T
-set guioptions-=r
+if has("gui_running")
+    if has("gui_gtk2")
+        set guifont=DejaVu\ Sans\ Mono\ 12
+        set lsp=4
+    elseif has("gui_win32")
+        set guifont=Consolas:h12
+        set lsp=0
+    endif
+    set guioptions-=m
+    set guioptions-=T
+    set guioptions-=r
+endif
 
 set completeopt=menuone,popup
 
