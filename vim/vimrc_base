@@ -16,7 +16,7 @@ set laststatus=2
 set report=0
 set cursorline
 if has("gui_running")
-    if has("gui_gtk2")
+    if has("gui_gtk2") || has("gui_gtk3")
         set guifont=DejaVu\ Sans\ Mono\ 12
         set lsp=4
     elseif has("gui_win32")
@@ -39,8 +39,10 @@ map <F10>      :set number!<CR>
 map <F11>      :set wrap!<CR>
 
 inoremap <C-v>      <ESC>"+Pa
-nnoremap gc         :e ~/.vimrc<CR>
-nnoremap gs         :colorscheme 
+nnoremap gce        :e ~/.vimrc<CR>
+nnoremap gca        :so ~/.vimrc<CR>
+nnoremap gsc        :colorscheme <C-d>
+nnoremap gsi        :set guifont=*<CR>
 vnoremap grs        !awk '{ s += $1 } END { print s }'<CR>
 vnoremap gra        !awk '{ s += $1; c += 1 } END { print s/c }'<CR>
 vnoremap gys        !awk '{ s += $1 } END { print s }'<CR>y$u:echo "Sum = <C-r>""<CR>
