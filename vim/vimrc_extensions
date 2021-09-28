@@ -1,4 +1,4 @@
-filetype off                  " required
+filetype off
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -11,8 +11,8 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ajh17/Spacegray.vim'
 Plugin 'fholgado/minibufexpl.vim'
 
-call vundle#end()            " required
-filetype plugin indent on    " required
+call vundle#end()
+filetype plugin indent on
 
 if (has("termguicolors"))
     set termguicolors
@@ -20,10 +20,9 @@ endif
 
 set t_Co=256
 set background=dark
-colorscheme spacegray
+silent! colorscheme spacegray
 let g:specegray_underline_search = 1
 let g:spacegray_italicize_comments = 1
-
 
 let g:airline#extensions#tabline#enabled = 0
 let g:airline_powerline_fonts = 0
@@ -35,12 +34,16 @@ let g:hybrid_reduced_contrast = 0
 let g:ycm_auto_trigger=1
 let g:miniBufExplVSplit = 30
 
-map <F2>       :MBEToggle<CR>
-map <F3>       :NERDTreeToggle<CR>
-map <C-k><C-k> :YcmCompleter GoTo<CR>
-map <C-k><C-]> :YcmCompleter GoToDeclaration<CR>
-map <C-k><C-d> :YcmCompleter GotoDefinition<CR>
-map <C-k><C-i> :YcmCompleter GoToInclude<CR>
-map <C-k><C-r> :YcmCompleter GoToReferences<CR>
+" Toggle file browser on and off
+nnoremap <F2>       :NERDTreeToggle<CR>
 
+" Toggle buffer list on and off
+nnoremap <F3>       :MBEToggle<CR>
+nnoremap <C-k><C-k> :YcmCompleter GoTo<CR>
+nnoremap <C-k><C-]> :YcmCompleter GoToDeclaration<CR>
+nnoremap <C-k><C-d> :YcmCompleter GotoDefinition<CR>
+nnoremap <C-k><C-i> :YcmCompleter GoToInclude<CR>
+nnoremap <C-k><C-r> :YcmCompleter GoToReferences<CR>
 
+inoremap <expr> <Up> pumvisible() ? '<C-e><Up>' : '<Up>'
+inoremap <expr> <Down> pumvisible() ? '<C-y><Down>' : '<Down>'
