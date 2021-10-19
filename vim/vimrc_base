@@ -7,6 +7,8 @@ set number
 set ruler
 set tabstop=4
 set shiftwidth=4
+set notimeout
+set nottimeout
 set smarttab
 set expandtab
 set listchars=tab:>·,space:·,extends:>,precedes:<
@@ -38,19 +40,42 @@ map <F9>       :set cursorline!<CR>
 map <F10>      :set number!<CR>
 map <F11>      :set wrap!<CR>
 
-inoremap <C-v>      <ESC>"+Pa
-nnoremap gce        :e ~/.vimrc<CR>
+" gc...: various custom ops
+" gca: apply configuration
+" gce: edit configuration file
+" gcf: select GUI font
+" gco: select colorscheme
+"
+" gcd...: calculations and other data ops
+" gcda, gcdA: calculate average of numbers, replace (gcda) or print (gcdA)
+" gcds, gcdS: calculate sum of numbers
+"
+" gcx...: hex editor
+" gcxx: raw data to hex (xxd -g1)
+" gcxb: raw data to binary (xxd -b -g4)
+" gcxr: hex/binary to raw data (xxd -r)
+" gcxi: raw data to hex, customize command
+"
 nnoremap gca        :so ~/.vimrc<CR>
-nnoremap gsc        :colorscheme <C-d>
-nnoremap gsi        :set guifont=*<CR>
-vnoremap grs        !awk '{ s += $1 } END { print s }'<CR>
-vnoremap gra        !awk '{ s += $1; c += 1 } END { print s/c }'<CR>
-vnoremap gys        !awk '{ s += $1 } END { print s }'<CR>y$u:echo "Sum = <C-r>""<CR>
-vnoremap gya        !awk '{ s += $1; c += 1 } END { print s/c }'<CR>y$u:echo "Average = <C-r>""<CR>
+nnoremap gce        :e ~/.vimrc<CR>
+nnoremap gcf        :set guifont=*<CR>
+nnoremap gco        :colorscheme <C-d>
+noremap  gcds       :!awk '{ s += $1 } END { print s }'<CR>
+noremap  gcdS       :!awk '{ s += $1 } END { print s }'<CR>y$u:echo "Sum = <C-r>""<CR>
+noremap  gcda       :!awk '{ s += $1; c += 1 } END { print s/c }'<CR>
+noremap  gcdA       :!awk '{ s += $1; c += 1 } END { print s/c }'<CR>y$u:echo "Average = <C-r>""<CR>
+nnoremap gcxx       :%!xxd -g1<CR>
+nnoremap gcxb       :%!xxd -b -g1 -c4<CR>
+nnoremap gcxr       :%!xxd -r<CR>
+nnoremap gcxi       :%!xxd 
 
 vnoremap <TAB>      >gv
 vnoremap <S-TAB>    <gv
 
+inoremap <S-Up>     <ESC>v<Up>
+inoremap <S-Down>   <ESC>v<Down>
+inoremap <S-Left>   <ESC>v<Left>
+inoremap <S-Right>  <ESC>v<Right>
 nnoremap <S-Up>     v<Up>
 nnoremap <S-Down>   v<Down>
 nnoremap <S-Left>   v<Left>
