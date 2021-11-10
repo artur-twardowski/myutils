@@ -10,6 +10,8 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ajh17/Spacegray.vim'
 Plugin 'fholgado/minibufexpl.vim'
+Plugin 'preservim/tagbar'
+Plugin 'Yohannfra/Vim-Vim-Project'
 
 call vundle#end()
 filetype plugin indent on
@@ -35,15 +37,19 @@ let g:ycm_auto_trigger=1
 let g:miniBufExplVSplit = 30
 
 " Toggle file browser on and off
-nnoremap <F2>       :NERDTreeToggle<CR>
+nnoremap <F2>            :NERDTreeToggle<CR>
 
 " Toggle buffer list on and off
-nnoremap <F3>       :MBEToggle<CR>
-nnoremap <C-k><C-k> :YcmCompleter GoTo<CR>
-nnoremap <C-k><C-]> :YcmCompleter GoToDeclaration<CR>
-nnoremap <C-k><C-d> :YcmCompleter GotoDefinition<CR>
-nnoremap <C-k><C-i> :YcmCompleter GoToInclude<CR>
-nnoremap <C-k><C-r> :YcmCompleter GoToReferences<CR>
+nnoremap <F3>            :MBEToggle<CR>
+
+" Toggle tagbar on and off
+nnoremap <F4>            :TagbarToggle<CR>
+
+nnoremap <C-k><C-k>      :YcmCompleter GoTo<CR>
+nnoremap <C-k><C-j>      :YcmCompleter GoToReferences<CR>
+nnoremap <C-k><C-d><C-c> :YcmCompleter GoToDeclaration<CR>
+nnoremap <C-k><C-d><C-f> :YcmCompleter GotoDefinition<CR>
+nnoremap <C-k><C-r>      :YcmCompleter RefactorRename 
 
 inoremap <expr> <Up> pumvisible() ? '<C-e><Up>' : '<Up>'
 inoremap <expr> <Down> pumvisible() ? '<C-y><Down>' : '<Down>'

@@ -31,6 +31,7 @@ if has("gui_running")
 endif
 
 set completeopt=menuone,popup
+packadd termdebug
 
 map <C-h>      :bp<CR>
 map <C-l>      :bn<CR>
