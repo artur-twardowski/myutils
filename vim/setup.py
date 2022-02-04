@@ -10,12 +10,38 @@ FILES_TO_FETCH=(
         ("git://github.com/ycm-core/YouCompleteMe.git", "$VIMDIR/bundle", "YouCompleteMe")
         )
 
+def print_cmd(cmd):
+    message = ">> Executing command: %s" % cmd
+    print("\x1b[1;32m%s\x1b[0m" % message)
+
+def print_step(step):
+    message = "** %s **" % step
+    print("\x1b[1;33m%s\x1b[0m" % message)
+
+def print_error(msg):
+    message = "ERROR: %s" % msg
+    print("\x1b[1;31m%s\x1b[0m" % message)
+
 def exec_or_die(cmd):
-    print(">>> %s" % shlex.join(cmd))
-    result = subprocess.run(cmd)
-    assert result.returncode == 0, "Command returned %d" % result.returncode
+    print_cmd(shlex.join(cmd))
+    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    stdout, stderr = proc.communicate()
+    result = proc.wait()
+
+
+    if result != 0:
+        for line in stdout.decode('utf-8').split('\n'):
+            print_error(line)
+        print_error("Command returned %d" % result)
+        exit(1)
 
 if __name__ == "__main__":
+    print_cmd("print_cmd")
+    exec_or_die(["ping", "127.0.0.1", "-c", "3", "-W", "1"])
+    print_step("print_step")
+    print_error("print_error")
+    exec_or_die(["ping", "192.168.0.0", "-c", "1", "-W", "1"])
+    exit(1)
     VIMDIR = None
     VIMRC = None
     INITIALDIR = os.getcwd()
@@ -63,7 +89,7 @@ if __name__ == "__main__":
     add_vimrc_extensions = True
     add_vimrc_projectspec = True
 
-    print("*** DOWNLOADING REQUIRED FILES ***")
+    print_step("Downloading required files")
     try:
         vimrc = open(VIMRC, "r")
         for line in vimrc:
@@ -86,7 +112,7 @@ if __name__ == "__main__":
     except FileNotFoundError:
         print("vimrc file (%s) does not exist, will be created" % (VIMRC))
 
-    print("*** BUILDING YouCompleteMe ***")
+    print_step("Building YouCompleteMe")
     dir = os.path.join(VIMDIR, "bundle", "YouCompleteMe")
     print("Entering directory %s" % dir)
     os.chdir(dir)
@@ -94,7 +120,7 @@ if __name__ == "__main__":
     exec_or_die(["python3", "install.py", "--clangd-completer"])
     os.chdir(INITIALDIR)
 
-    print("*** INSTALLING VIMRC ***")
+    print_step("Installing vimrc")
     try:
         vimrc = open(VIMRC, "a+")
         if add_vimrc_base:
@@ -112,6 +138,6 @@ if __name__ == "__main__":
     except Exception as ex:
         print("Error while writing vimrc (%s): %s: " % (VIMRC, str(ex)))
 
-    print("*** RUNNING POST-INSTALLATION ***")
+    print_step("Running post-installation")
     exec_or_die(["vim", "+PluginInstall", "+qall"])
 
