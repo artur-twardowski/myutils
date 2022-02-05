@@ -5,7 +5,19 @@ call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
+#ifdef USE_YCM
 Plugin 'ycm-core/YouCompleteMe'
+#endif
+#ifdef USE_LSP
+Plugin 'prabirshrestha/vim-lsp'
+Plugin 'prabirshrestha/async.vim'
+Plugin 'prabirshrestha/asyncomplete.vim'
+Plugin 'prabirshrestha/asyncomplete-lsp.vim'
+Plugin 'prabirshrestha/asyncomplete-tags.vim'
+Plugin 'prabirshrestha/asyncomplete-buffer.vim'
+Plugin 'prabirshrestha/asyncomplete-file.vim'
+Plugin 'mattn/vim-lsp-settings'
+#endif
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ajh17/Spacegray.vim'
@@ -33,9 +45,32 @@ let g:airline_theme='hybrid'
 let g:hybrid_custom_term_colors = 1
 let g:hybrid_reduced_contrast = 0 
 
+#ifdef USE_YCM
 let g:ycm_auto_trigger=1
+#endif
+#ifdef USE_LSP
+let g:asyncomplete_auto_completeopt = 1
+#endif
 let g:miniBufExplVSplit = 30
 
+#ifdef USE_LSP
+call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+    \ 'name': 'buffer',
+    \ 'allowlist': ['*'],
+    \ 'blocklist': ['go'],
+    \ 'completor': function('asyncomplete#sources#buffer#completor'),
+    \ 'config': {
+        \    'max_buffer_size': 5000000,
+    \  },
+    \ }))
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+    \ 'name': 'file',
+    \ 'allowlist': ['*'],
+    \ 'priority': 10,
+    \ 'completor': function('asyncomplete#sources#file#completor')
+    \ }))
+#endif
 " Toggle file browser on and off
 nnoremap <F2>            :NERDTreeToggle<CR>
 
@@ -45,11 +80,22 @@ nnoremap <F3>            :MBEToggle<CR>
 " Toggle tagbar on and off
 nnoremap <F4>            :TagbarToggle<CR>
 
+#ifdef USE_YCM
 nnoremap <C-k><C-k>      :YcmCompleter GoTo<CR>
 nnoremap <C-k><C-j>      :YcmCompleter GoToReferences<CR>
 nnoremap <C-k><C-d><C-c> :YcmCompleter GoToDeclaration<CR>
 nnoremap <C-k><C-d><C-f> :YcmCompleter GotoDefinition<CR>
 nnoremap <C-k><C-r>      :YcmCompleter RefactorRename 
+#endif
+#ifdef USE_LSP
+nnoremap <C-k><C-k>      :LspDefinition<CR>
+nnoremap <C-k><C-d><C-c> :LspDeclaration<CR>
+nnoremap <C-k><C-j>      :LspReferences<CR>
+nnoremap <C-k><C-r>      :LspRename<CR>
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+#endif
 
 inoremap <expr> <Up> pumvisible() ? '<C-e><Up>' : '<Up>'
 inoremap <expr> <Down> pumvisible() ? '<C-y><Down>' : '<Down>'
