@@ -71,10 +71,10 @@ nnoremap <S-F9>     :call ToggleConcealCursor()<CR>
 nnoremap <F10>      :set number!<CR>
 nnoremap <S-F10>    :set cursorline!<CR>
 nnoremap <F11>      :set wrap!<CR>
+nnoremap <S-F11>    :set colorcolumn=
 " gc...: various custom ops
 " gca: apply configuration
 " gce: edit configuration file
-" gcf: select GUI font
 " gco: select colorscheme
 "
 " gcd...: calculations and other data ops

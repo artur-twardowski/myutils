@@ -50,6 +50,7 @@ let g:ycm_auto_trigger=1
 #endif
 #ifdef USE_LSP
 let g:asyncomplete_auto_completeopt = 1
+let g:lsp_diagnostics_echo_cursor = 1
 #endif
 let g:miniBufExplVSplit = 30
 
