@@ -17,6 +17,31 @@ set showcmd
 set laststatus=2
 set report=0
 set cursorline
+
+function! ToggleConceal()
+    if &conceallevel == 1
+        set conceallevel=0
+        echom "Ligatures disabled"
+    else
+        set conceallevel=1
+        echom "Ligatures enabled"
+    endif
+endfunction
+
+function! ToggleConcealCursor()
+    if &concealcursor == ""
+        set concealcursor="nc"
+    else
+        set concealcursor=""
+    endif
+endfunction
+
+function ChangeLineSpacing(amount)
+    let spacing = &lsp + a:amount
+    let &lsp=spacing
+    echom "Line spacing set to " &lsp
+endfunction
+
 if has("gui_running")
     if has("gui_gtk2") || has("gui_gtk3")
         set guifont=DejaVu\ Sans\ Mono\ 12
@@ -28,19 +53,24 @@ if has("gui_running")
     set guioptions-=m
     set guioptions-=T
     set guioptions-=r
+
+    nnoremap <F7> :call ChangeLineSpacing(-2)<CR>
+    nnoremap <F8> :call ChangeLineSpacing(2)<CR>
+    nnoremap <M-F7>        :set guifont=*<CR>
 endif
 
 set completeopt=menuone,popup
 packadd termdebug
 
-map <C-h>      :bp<CR>
-map <C-l>      :bn<CR>
-map <C-x>      :bd<CR>
-map <C-j>      :ls<CR>:b
-map <F9>       :set cursorline!<CR>
-map <F10>      :set number!<CR>
-map <F11>      :set wrap!<CR>
-
+nnoremap <C-h>      :bp<CR>
+nnoremap <C-l>      :bn<CR>
+nnoremap <C-x>      :bd<CR>
+nnoremap <C-j>      :ls<CR>:b
+nnoremap <F9>       :call ToggleConceal()<CR>
+nnoremap <S-F9>     :call ToggleConcealCursor()<CR>
+nnoremap <F10>      :set number!<CR>
+nnoremap <S-F10>    :set cursorline!<CR>
+nnoremap <F11>      :set wrap!<CR>
 " gc...: various custom ops
 " gca: apply configuration
 " gce: edit configuration file
@@ -59,7 +89,6 @@ map <F11>      :set wrap!<CR>
 "
 nnoremap gca        :so ~/.vimrc<CR>
 nnoremap gce        :e ~/.vimrc<CR>
-nnoremap gcf        :set guifont=*<CR>
 nnoremap gco        :colorscheme <C-d>
 noremap  gcds       :!awk '{ s += $1 } END { print s }'<CR>
 noremap  gcdS       :!awk '{ s += $1 } END { print s }'<CR>y$u:echo "Sum = <C-r>""<CR>

@@ -11,13 +11,16 @@ def print_cmd(cmd):
     message = ">> Executing command: %s" % cmd
     print("\x1b[1;32m%s\x1b[0m" % message)
 
+
 def print_step(step):
     message = "** %s **" % step
     print("\x1b[1;33m%s\x1b[0m" % message)
 
+
 def print_error(msg):
     message = "ERROR: %s" % msg
     print("\x1b[1;31m%s\x1b[0m" % message)
+
 
 def exec_or_die(cmd):
     print_cmd(shlex.join(cmd))
@@ -31,6 +34,7 @@ def exec_or_die(cmd):
         print_error("Command returned %d" % result)
         exit(1)
 
+
 def exec_or_die_interactive(cmd):
     print_cmd(shlex.join(cmd))
     result = subprocess.run(cmd)
@@ -38,15 +42,18 @@ def exec_or_die_interactive(cmd):
         print_error("Command returned %d" % result.returncode)
         exit(1)
 
+
 class DownloadDescriptor:
     RES_FILE = 1
     RES_FILE_WITH_PREPROCESS = 2
     RES_GIT_REPO = 3
+
     def __init__(self, resource_type, paths, dest_dir, dest_filename):
         self.res_type = resource_type
         self.paths = paths
         self.dest_dir = dest_dir
         self.dest_filename = dest_filename
+
 
 class Condition:
     def __init__(self, key, op):
@@ -54,7 +61,7 @@ class Condition:
         self._op = op
         self.negate = False
 
-    def is_met(self, defines:dict):
+    def is_met(self, defines: dict):
         result = False
         if self._op == "defined":
             result = self._key in defines
@@ -64,11 +71,12 @@ class Condition:
 
         return result
 
+
 class Preprocessor:
     def __init__(self):
         self._defines = {}
         self._conditions = []
-        self.re_ifdef = re.compile('#ifdef\s+([A-Za-z0-9_]+)')
+        self.re_ifdef = re.compile(r'#ifdef\s+([A-Za-z0-9_]+)')
         self.re_else = re.compile('#else')
         self.re_endif = re.compile('#endif')
 
@@ -96,7 +104,7 @@ class Preprocessor:
         if self.re_endif.match(line_stripped):
             self._conditions.pop()
             return None
-            
+
         for cond in self._conditions:
             if not cond.is_met(self._defines):
                 return None
@@ -107,6 +115,7 @@ class Preprocessor:
                 line = line.replace(key_f, value)
 
         return line
+
 
 class Configuration:
     def __init__(self):
