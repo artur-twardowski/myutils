@@ -229,27 +229,37 @@ if __name__ == "__main__":
             print("Directory %s does not exist, creating" % dl.dest_dir)
             exec_or_die(["mkdir", "-p", dl.dest_dir])
 
+        found = False
         for source in dl.paths:
-            found = False
             if dl.res_type in [DownloadDescriptor.RES_FILE, DownloadDescriptor.RES_FILE_WITH_PREPROCESS]:
                 if source.find("://") == -1:
-                    if os.path.exists(source):
+                    if os.path.exists(source) and False:
                         exec_or_die(["cp", source, join(dl.dest_dir, dl.dest_filename)])
                         found = True
+                        print("Local %s found" % source)
+                    else:
+                        print("Local %s not found" % source)
                 else:
                     exec_or_die(["wget", source, "-O", join(dl.dest_dir, dl.dest_filename)])
                     found = True
+                    print("Remote %s found" % source)
 
-                if dl.res_type == DownloadDescriptor.RES_FILE_WITH_PREPROCESS:
+                if dl.res_type == DownloadDescriptor.RES_FILE_WITH_PREPROCESS and found:
                     preprocess(preprocessor, join(dl.dest_dir, dl.dest_filename))
 
             elif dl.res_type == DownloadDescriptor.RES_GIT_REPO:
                 try:
                     exec_or_die(["rm", "-rf", join(dl.dest_dir, dl.dest_filename)])
                     exec_or_die(["git", "clone", source, join(dl.dest_dir, dl.dest_filename)])
+                    found = True
+                    print("Remote %s found" % source)
                 except AssertionError:
                     print("Repository at %s already cloned" % join(dl.dest_dir, dl.dest_filename))
-            if found: break
+            
+            if found:
+                break
+        if not found:
+            print_error("Could not provide %s" % dl.dest_filename)
 
     add_vimrc_base = True
     add_vimrc_extensions = True
