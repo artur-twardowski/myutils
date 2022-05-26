@@ -176,6 +176,10 @@ if __name__ == "__main__":
                 ["vimrc_extensions", "https://raw.githubusercontent.com/artur-twardowski/myutils/master/vim/vimrc_extensions"],
                 conf.path_to_vimdir, "vimrc_extensions"),
             DownloadDescriptor(
+                DownloadDescriptor.RES_FILE,
+                ["spacegray-mod.vim", "https://raw.githubusercontent.com/artur-twardowski/myutils/master/vim/spacegray-mod.vim"],
+                join(conf.path_to_vimdir, "colors"), "spacegray-mod.vim"),
+            DownloadDescriptor(
                 DownloadDescriptor.RES_GIT_REPO,
                 ["https://github.com/VundleVim/Vundle.vim.git"],
                 join(conf.path_to_vimdir, "bundle"), "Vundle.vim")

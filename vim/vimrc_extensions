@@ -34,7 +34,7 @@ endif
 
 set t_Co=256
 set background=dark
-silent! colorscheme spacegray
+silent! colorscheme spacegray-mod
 let g:specegray_underline_search = 1
 let g:spacegray_italicize_comments = 1
 
