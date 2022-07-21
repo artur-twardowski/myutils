@@ -117,4 +117,5 @@ vnoremap <S-Up>     <Up>
 vnoremap <S-Down>   <Down>
 vnoremap <S-Left>   <Left>
 vnoremap <S-Right>  <Right>
-
+map <Down>          gj
+map <Up>            gk
