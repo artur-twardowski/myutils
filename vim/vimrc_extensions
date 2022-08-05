@@ -74,11 +74,12 @@ au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#source
     \ 'completor': function('asyncomplete#sources#file#completor')
     \ }))
 #endif
-" Toggle file browser on and off
-nnoremap <F2>            :NERDTreeToggle<CR>
 
 " Toggle buffer list on and off
-nnoremap <F3>            :MBEToggle<CR>
+nnoremap <F2>            :MBEToggle<CR>
+
+" Toggle file browser on and off
+nnoremap <F3>            :NERDTreeToggle<CR>
 
 " Toggle tagbar on and off
 nnoremap <F4>            :TagbarToggle<CR>
