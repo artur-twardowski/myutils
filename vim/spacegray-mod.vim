@@ -150,6 +150,10 @@ hi link rubyRailsARClassMethod        Statement
 hi link diffAdded           String
 hi link diffRemoved         Function
 
+hi GitGutterAdd  guifg=#009900 ctermfg=2
+hi GitGutterChange guifg=#bbbb00 ctermfg=3
+hi GitGutterDelete guifg=#ff2222 ctermfg=1
+
 if (has('terminal') && has('termguicolors')) || has('gui_running')
   let g:terminal_ansi_colors = [
         \ '#3A3E42',

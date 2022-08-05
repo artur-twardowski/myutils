@@ -24,6 +24,8 @@ Plugin 'ajh17/Spacegray.vim'
 Plugin 'fholgado/minibufexpl.vim'
 Plugin 'preservim/tagbar'
 Plugin 'Yohannfra/Vim-Vim-Project'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'tpope/vim-fugitive'
 
 call vundle#end()
 filetype plugin indent on
