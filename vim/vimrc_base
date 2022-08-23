@@ -42,6 +42,24 @@ function ChangeLineSpacing(amount)
     echom "Line spacing set to " &lsp
 endfunction
 
+function! QuickfixGrep()
+    let l:str = input("Search for: ")
+    if l:str != ""
+        :exec 'vimgrep /' . l:str . '/ ' . expand('%')
+        :copen
+    endif
+endfunction
+
+function! ToggleExpandtab()
+    if &expandtab
+        :set noexpandtab
+        echom "expandtab disabled - using tabs"
+    else
+        :set expandtab
+        echom "expandtab enabled - using spaces"
+    endif
+endfunction
+
 if has("gui_running")
     if has("gui_gtk2") || has("gui_gtk3")
         set guifont=DejaVu\ Sans\ Mono\ 12
@@ -62,16 +80,38 @@ endif
 set completeopt=menuone,popup
 packadd termdebug
 
+" Ctrl-H, Ctrl-L: navigate buffers
+" Ctrl-X: delete (close) buffer
+" Ctrl-J: list buffers
 nnoremap <C-h>      :bp<CR>
 nnoremap <C-l>      :bn<CR>
 nnoremap <C-x>      :bd<CR>
 nnoremap <C-j>      :ls<CR>:b
+
+" F8: enable/disable presentation of whitespaces
+nnoremap <F8>       :set list!<CR>
+
+" Shift-F8: switch between tabs and spaces
+nnoremap <S-F8>     :call ToggleExpandtab()<CR>
+
+" F9: enable/disable ligatures
 nnoremap <F9>       :call ToggleConceal()<CR>
+
+" Shift-F9: enable/disable ligatures at active line
 nnoremap <S-F9>     :call ToggleConcealCursor()<CR>
+
+" F10: enable/disable line numbers
 nnoremap <F10>      :set number!<CR>
+
+" Shift-F10: enable/disable highlighting of active line
 nnoremap <S-F10>    :set cursorline!<CR>
+
+" F11: enable/disable line wrap
 nnoremap <F11>      :set wrap!<CR>
-nnoremap <S-F11>    :set colorcolumn=
+
+" Shift-F11: select colored columns
+nnoremap <S-F11>    :set colorcolumn=<C-R>=&colorcolumn<CR>
+
 " gc...: various custom ops
 " gca: apply configuration
 " gce: edit configuration file
@@ -101,6 +141,9 @@ nnoremap gcxi       :%!xxd
 
 " g!: execute a command putting its output into a new buffer
 nnoremap g!         :new \| r!
+" g/: QuickfixGrep - search for an expression and put the results into a
+" quickfix window
+nnoremap g/         :call QuickfixGrep()<CR>
 
 vnoremap <TAB>      >gv
 vnoremap <S-TAB>    <gv
