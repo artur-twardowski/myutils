@@ -112,6 +112,12 @@ nnoremap <F11>      :set wrap!<CR>
 " Shift-F11: select colored columns
 nnoremap <S-F11>    :set colorcolumn=<C-R>=&colorcolumn<CR>
 
+" F12: open terminal (Bash)
+nnoremap <F12>      :term bash<CR>
+
+" Shift-F12: open terminal (Bash) leaving Vim in background
+nnoremap <S-F12>    :!bash<CR>
+
 " gc...: various custom ops
 " gca: apply configuration
 " gce: edit configuration file
