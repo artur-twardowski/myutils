@@ -145,6 +145,13 @@ nnoremap gcxb       :%!xxd -b -g1 -c4<CR>
 nnoremap gcxr       :%!xxd -r<CR>
 nnoremap gcxi       :%!xxd 
 
+" [q, ]q - navigate to previous/next quickfix list item
+" [Q, ]Q - navigate to first/last quickfix list item
+nnoremap [q         :cprev<CR>
+nnoremap ]q         :cnext<CR>
+nnoremap [Q         :cfirst<CR>
+nnoremap ]Q         :clast<CR>
+
 " g!: execute a command putting its output into a new buffer
 nnoremap g!         :new \| r!
 " g/: QuickfixGrep - search for an expression and put the results into a
