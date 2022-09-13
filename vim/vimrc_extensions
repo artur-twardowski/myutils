@@ -103,3 +103,14 @@ inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 
 inoremap <expr> <Up> pumvisible() ? '<C-e><Up>' : '<Up>'
 inoremap <expr> <Down> pumvisible() ? '<C-y><Down>' : '<Down>'
+
+" Fugitive commands
+" <F5><F5> - git status
+" <F5>c      git commit (open editor)
+" <F5>C      git commit (inline message input)
+" <F5>A      git commit with amendment
+nnoremap <F5><F5>        :G<CR><C-W>J
+nnoremap <F5>c           :G commit<CR><C-W>J
+nnoremap <F5>C           :G commit -m 
+nnoremap <F5>A           :G commit --amend<CR><C-W>J
+
