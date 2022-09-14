@@ -55,6 +55,9 @@ let g:asyncomplete_auto_completeopt = 1
 let g:lsp_diagnostics_echo_cursor = 1
 #endif
 let g:miniBufExplVSplit = 30
+let g:miniBufExplAutoStart = 0
+let g:miniBufExplAutoStart = 0
+let g:miniBufExplCloseOnSelect = 0
 
 #ifdef USE_LSP
 call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
@@ -78,8 +81,11 @@ au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#source
 " Toggle buffer list on and off
 nnoremap <F2>            :MBEToggle<CR>
 
-" Toggle file browser on and off
-nnoremap <F3>            :NERDTreeToggle<CR>
+" Toggle buffer list on and off
+" F3 - open the buffer list
+" F3 - open the buffer list, close it after picking a position
+nnoremap <F3>            :let g:miniBufExplCloseOnSelect=0<CR>:MBEToggle<CR>:MBEFocus<CR>
+nnoremap <S-F3>          :let g:miniBufExplCloseOnSelect=1<CR>:MBEOpen<CR>:MBEFocus<CR>
 
 " Toggle tagbar on and off
 nnoremap <F4>            :TagbarToggle<CR>
