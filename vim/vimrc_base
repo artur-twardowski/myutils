@@ -103,8 +103,11 @@ nnoremap <S-F9>     :call ToggleConcealCursor()<CR>
 " F10: enable/disable line numbers
 nnoremap <F10>      :set number!<CR>
 
-" Shift-F10: enable/disable highlighting of active line
-nnoremap <S-F10>    :set cursorline!<CR>
+" Shift-F10: enable/disable relative line numbers
+nnoremap <S-F10>    :set relativenumber!<CR>
+
+" g-F10: enable/disable highlighting of active line
+nnoremap g<F10>    :set cursorline!<CR>
 
 " F11: enable/disable line wrap
 nnoremap <F11>      :set wrap!<CR>
