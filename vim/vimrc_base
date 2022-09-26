@@ -77,7 +77,12 @@ if has("gui_running")
     nnoremap <M-F7>        :set guifont=*<CR>
 endif
 
+#ifdef NEOVIM
+set completeopt=menuone
+#else
 set completeopt=menuone,popup
+#endif
+
 packadd termdebug
 
 " Ctrl-H, Ctrl-L: navigate buffers

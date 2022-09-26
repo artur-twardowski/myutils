@@ -67,6 +67,8 @@ class Condition:
         result = False
         if self._op == "defined":
             result = self._key in defines
+        elif self._op == "not-defined":
+            result = self._key not in defines
 
         if self.negate:
             result = not result
@@ -79,6 +81,7 @@ class Preprocessor:
         self._defines = {}
         self._conditions = []
         self.re_ifdef = re.compile(r'#ifdef\s+([A-Za-z0-9_]+)')
+        self.re_ifndef = re.compile(r'#ifndef\s+([A-Za-z0-9_]+)')
         self.re_else = re.compile('#else')
         self.re_endif = re.compile('#endif')
 
@@ -97,6 +100,11 @@ class Preprocessor:
         if self.re_ifdef.match(line_stripped):
             sym = self.re_ifdef.findall(line_stripped)[0]
             self._conditions.append(Condition(sym, "defined"))
+            return None
+
+        if self.re_ifndef.match(line_stripped):
+            sym = self.re_ifndef.findall(line_stripped)[0]
+            self._conditions.append(Condition(sym, "not-defined"))
             return None
 
         if self.re_else.match(line_stripped):
@@ -229,9 +237,9 @@ if __name__ == "__main__":
         for path in dl.paths:
             if dl.res_type == DownloadDescriptor.RES_FILE or dl.res_type == DownloadDescriptor.RES_FILE_WITH_PREPROCESS:
                 if path.find("://") != -1:
-                    stdout.write("    download file %s" % path)
+                    stdout.write("      * download file %s" % path)
                 else:
-                    stdout.write("    copy local file %s" % path)
+                    stdout.write("      * copy local file %s" % path)
                     if not os.path.isfile(path):
                         stdout.write(" (does not exist)")
 
@@ -239,7 +247,7 @@ if __name__ == "__main__":
                     stdout.write(" and preprocess")
                 stdout.write("\n")
             if dl.res_type == DownloadDescriptor.RES_GIT_REPO:
-                stdout.write("    checkout Git repository %s\n" % path)
+                stdout.write("      * checkout Git repository %s\n" % path)
 
     if conf.confirm_before_proceeding:
         stdout.write("Continue setup? [y/N]: ")
@@ -257,7 +265,7 @@ if __name__ == "__main__":
         for source in dl.paths:
             if dl.res_type in [DownloadDescriptor.RES_FILE, DownloadDescriptor.RES_FILE_WITH_PREPROCESS]:
                 if source.find("://") == -1:
-                    if os.path.exists(source) and False:
+                    if os.path.exists(source):
                         exec_or_die(["cp", source, join(dl.dest_dir, dl.dest_filename)])
                         found = True
                         print("Local %s found" % source)
