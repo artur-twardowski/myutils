@@ -93,18 +93,21 @@ nnoremap <F8>       :set list!<CR>
 
 " Shift-F8: switch between tabs and spaces
 nnoremap <S-F8>     :call ToggleExpandtab()<CR>
+nnoremap <F20>      :call ToggleExpandtab()<CR>
 
 " F9: enable/disable ligatures
 nnoremap <F9>       :call ToggleConceal()<CR>
 
 " Shift-F9: enable/disable ligatures at active line
 nnoremap <S-F9>     :call ToggleConcealCursor()<CR>
+nnoremap <F21>      :call ToggleExpandtab()<CR>
 
 " F10: enable/disable line numbers
 nnoremap <F10>      :set number!<CR>
 
 " Shift-F10: enable/disable relative line numbers
 nnoremap <S-F10>    :set relativenumber!<CR>
+nnoremap <F22>      :set relativenumber!<CR>
 
 " g-F10: enable/disable highlighting of active line
 nnoremap g<F10>    :set cursorline!<CR>
@@ -114,12 +117,14 @@ nnoremap <F11>      :set wrap!<CR>
 
 " Shift-F11: select colored columns
 nnoremap <S-F11>    :set colorcolumn=<C-R>=&colorcolumn<CR>
+nnoremap <F23>      :set colorcolumn=<C-R>=&colorcolumn<CR>
 
 " F12: open terminal (Bash)
 nnoremap <F12>      :term bash<CR>
 
 " Shift-F12: open terminal (Bash) leaving Vim in background
 nnoremap <S-F12>    :!bash<CR>
+nnoremap <F24>      :!bash<CR>
 
 " gc...: various custom ops
 " gca: apply configuration

@@ -122,12 +122,13 @@ class Preprocessor:
 class Configuration:
     def __init__(self):
         self.lang_server_plugin = "lsp"
-        self.path_to_vimrc = join(expanduser("~"), ".vimrc")
-        self.path_to_vimdir = join(expanduser("~"), ".vim")
+        self.target = "vim8"
         self.confirm_before_proceeding = True
+        self.path_to_vimrc = None
+        self.path_to_vimdir = None
 
     def create_from_command_line(self, args):
-        optlist, args = gnu_getopt(args, "L:d:f:y")
+        optlist, args = gnu_getopt(args, "L:d:f:t:y")
 
         for key, value in optlist:
             if key in ["-L"]:
@@ -136,6 +137,8 @@ class Configuration:
                 self.path_to_vimdir = value
             elif key in ["-f"]:
                 self.path_to_vimrc = value
+            elif key in ['-t']:
+                self.target = value
             elif key in ['-y']:
                 self.confirm_before_proceeding = False
 
@@ -144,6 +147,18 @@ class Configuration:
         if self.lang_server_plugin not in supported_lang_server_plugins:
             print_error("Unsupported language server plugin \"%s\". Possible values: %s" % (self.lang_server_plugin, supported_lang_server_plugins))
             return False
+
+        if self.path_to_vimrc is None:
+            self.path_to_vimrc = {
+                        "vim8": join(expanduser("~"), ".vimrc"),
+                        "nvim": join(expanduser("~"), ".config", "nvim", "init.vim")
+                    }[self.target] 
+
+        if self.path_to_vimdir is None:
+            self.path_to_vimdir = {
+                        "vim8": join(expanduser("~"), ".vim"),
+                        "nvim": join(expanduser("~"), ".config", "nvim")
+                    }[self.target] 
 
         self.path_to_vimrc = abspath(self.path_to_vimrc)
         self.path_to_vimdir = abspath(self.path_to_vimdir)
@@ -197,6 +212,9 @@ if __name__ == "__main__":
         preprocessor.set_definition("USE_LSP")
     elif conf.lang_server_plugin == "ycm":
         preprocessor.set_definition("USE_YCM")
+
+    if conf.target == "nvim":
+        preprocessor.set_definition("NEOVIM")
 
     print("Vim directory:          %s" % conf.path_to_vimdir)
     print("Path to vimrc:          %s" % conf.path_to_vimrc)
@@ -322,5 +340,10 @@ if __name__ == "__main__":
         os.chdir(INITIALDIR)
 
     print_step("Running post-installation")
-    exec_or_die_interactive(["vim", "+PluginInstall", "+qall"])
+    if conf.target == "vim8":
+        command = "vim"
+    elif conf.target == "nvim":
+        command = "nvim"
+
+    exec_or_die_interactive([command, "+PluginInstall", "+qall"])
 
