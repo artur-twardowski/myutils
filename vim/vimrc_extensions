@@ -79,13 +79,16 @@ au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#source
 #endif
 
 " Toggle buffer list on and off
-nnoremap <F2>            :MBEToggle<CR>
-
-" Toggle buffer list on and off
 " F3 - open the buffer list
 " F3 - open the buffer list, close it after picking a position
-nnoremap <F3>            :let g:miniBufExplCloseOnSelect=0<CR>:MBEToggle<CR>:MBEFocus<CR>
-nnoremap <S-F3>          :let g:miniBufExplCloseOnSelect=1<CR>:MBEOpen<CR>:MBEFocus<CR>
+nnoremap <F2>            :let g:miniBufExplCloseOnSelect=0<CR>:MBEToggle<CR>:MBEFocus<CR>
+nnoremap <S-F2>          :let g:miniBufExplCloseOnSelect=1<CR>:MBEOpen<CR>:MBEFocus<CR>
+nnoremap <F14>           :let g:miniBufExplCloseOnSelect=1<CR>:MBEOpen<CR>:MBEFocus<CR>
+
+" Open NERDTree
+nnoremap <F3>            :NERDTreeToggle<CR>
+nnoremap <S-F3>          :NERDTreeToggleVCS<CR>
+nnoremap <F15>           :NERDTreeToggleVCS<CR>
 
 " Toggle tagbar on and off
 nnoremap <F4>            :TagbarToggle<CR>
