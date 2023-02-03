@@ -53,6 +53,9 @@ let g:ycm_auto_trigger=1
 #ifdef USE_LSP
 let g:asyncomplete_auto_completeopt = 1
 let g:lsp_diagnostics_echo_cursor = 1
+let g:lsp_diagnostics_echo_delay = 100
+let g:lsp_diagnostics_virtual_text_enabled = 0
+
 #endif
 let g:miniBufExplVSplit = 30
 let g:miniBufExplAutoStart = 0
