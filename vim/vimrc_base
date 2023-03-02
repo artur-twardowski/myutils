@@ -11,7 +11,7 @@ set notimeout
 set nottimeout
 set smarttab
 set expandtab
-set listchars=tab:>·,space:·,extends:>,precedes:<
+set listchars=tab:»·,space:·,extends:→,precedes:←,nbsp:_
 set list
 set showcmd
 set laststatus=2
