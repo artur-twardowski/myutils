@@ -205,9 +205,9 @@ if __name__ == "__main__":
                 ["spacegray-mod.vim", "https://raw.githubusercontent.com/artur-twardowski/myutils/master/vim/spacegray-mod.vim"],
                 join(conf.path_to_vimdir, "colors"), "spacegray-mod.vim"),
             DownloadDescriptor(
-                DownloadDescriptor.RES_GIT_REPO,
-                ["https://github.com/VundleVim/Vundle.vim.git"],
-                join(conf.path_to_vimdir, "bundle"), "Vundle.vim")
+                DownloadDescriptor.RES_FILE,
+                ["https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"],
+                join(conf.path_to_vimdir, "autoload"), "plug.vim")
     ]
 
     if conf.lang_server_plugin == "ycm":
@@ -353,5 +353,5 @@ if __name__ == "__main__":
     elif conf.target == "nvim":
         command = "nvim"
 
-    exec_or_die_interactive([command, "+PluginInstall", "+qall"])
+    exec_or_die_interactive([command, "+PlugInstall", "+qall"])
 

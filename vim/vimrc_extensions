@@ -1,33 +1,31 @@
 filetype off
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin()
 
-Plugin 'gmarik/Vundle.vim'
-Plugin 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 #ifdef USE_YCM
-Plugin 'ycm-core/YouCompleteMe'
+Plug 'ycm-core/YouCompleteMe'
 #endif
 #ifdef USE_LSP
-Plugin 'prabirshrestha/vim-lsp'
-Plugin 'prabirshrestha/async.vim'
-Plugin 'prabirshrestha/asyncomplete.vim'
-Plugin 'prabirshrestha/asyncomplete-lsp.vim'
-Plugin 'prabirshrestha/asyncomplete-tags.vim'
-Plugin 'prabirshrestha/asyncomplete-buffer.vim'
-Plugin 'prabirshrestha/asyncomplete-file.vim'
-Plugin 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/asyncomplete-tags.vim'
+Plug 'prabirshrestha/asyncomplete-buffer.vim'
+Plug 'prabirshrestha/asyncomplete-file.vim'
+Plug 'mattn/vim-lsp-settings'
 #endif
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'ajh17/Spacegray.vim'
-Plugin 'fholgado/minibufexpl.vim'
-Plugin 'preservim/tagbar'
-Plugin 'Yohannfra/Vim-Vim-Project'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'tpope/vim-fugitive'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'fholgado/minibufexpl.vim'
+Plug 'preservim/tagbar'
+Plug 'Yohannfra/Vim-Vim-Project'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
 
-call vundle#end()
+call plug#end()
+
 filetype plugin indent on
 
 if (has("termguicolors"))
