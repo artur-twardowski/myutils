@@ -53,10 +53,26 @@ endfunction
 function! ToggleExpandtab()
     if &expandtab
         :set noexpandtab
-        echom "expandtab disabled - using tabs"
+        echom "TAB key will insert a tabulator"
     else
         :set expandtab
-        echom "expandtab enabled - using spaces"
+        echom "TAB key will insert spaces"
+    endif
+endfunction
+
+function! ToggleFolding()
+    if &foldmethod == "manual"
+        set foldmethod=syntax
+        echom "Folding based on syntax"
+    elseif &foldmethod == "syntax"
+        set foldmethod=marker
+        echom "Folding based on markers: " &foldmarker
+    elseif &foldmethod == "marker"
+        set foldmethod=indent
+        echom "Folding based on indentation"
+    else
+        set foldmethod=manual
+        echom "Folding defined manually only"
     endif
 endfunction
 
@@ -96,16 +112,16 @@ nnoremap <C-j>      :ls<CR>:b
 " F8: enable/disable presentation of whitespaces
 nnoremap <F8>       :set list!<CR>
 
-" Shift-F8: switch between tabs and spaces
-nnoremap <S-F8>     :call ToggleExpandtab()<CR>
-nnoremap <F20>      :call ToggleExpandtab()<CR>
+" Shift-F8: change folding method
+nnoremap <S-F8>     :call ToggleFolding()<CR>
+nnoremap <F20>      :call ToggleFolding()<CR>
 
 " F9: enable/disable ligatures
 nnoremap <F9>       :call ToggleConceal()<CR>
 
 " Shift-F9: enable/disable ligatures at active line
 nnoremap <S-F9>     :call ToggleConcealCursor()<CR>
-nnoremap <F21>      :call ToggleExpandtab()<CR>
+nnoremap <F21>      :call ToggleConcealCursor()<CR>
 
 " F10: enable/disable line numbers
 nnoremap <F10>      :set number!<CR>
@@ -130,6 +146,9 @@ nnoremap <F12>      :term bash<CR>
 " Shift-F12: open terminal (Bash) leaving Vim in background
 nnoremap <S-F12>    :!bash<CR>
 nnoremap <F24>      :!bash<CR>
+
+" g<TAB>: switch between tabs and spaces
+nnoremap g<TAB>     :call ToggleExpandtab()<CR>
 
 " gc...: various custom ops
 " gca: apply configuration
