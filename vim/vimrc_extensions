@@ -102,10 +102,16 @@ nnoremap <C-k><C-d><C-f> :YcmCompleter GotoDefinition<CR>
 nnoremap <C-k><C-r>      :YcmCompleter RefactorRename 
 #endif
 #ifdef USE_LSP
-nnoremap <C-k><C-k>      :LspDefinition<CR>
-nnoremap <C-k><C-d><C-c> :LspDeclaration<CR>
+nnoremap <C-k><C-d>      :LspDeclaration<CR>
+nnoremap <C-k><C-e>      :LspDocumentDiagnostics<CR>
+nnoremap <C-k><C-f>      :LspCodeAction<CR>
+nnoremap <C-k><C-h>      :LspDocumentSwitchSourceHeader<CR>
+nnoremap <C-k><C-i>      :LspImplementation<CR>
 nnoremap <C-k><C-j>      :LspReferences<CR>
+nnoremap <C-k><C-k>      :LspDefinition<CR>
+nnoremap <C-k><C-o>      :LspPeekDeclaration<CR>
 nnoremap <C-k><C-r>      :LspRename<CR>
+nnoremap <C-k><C-t>      :LspPeekTypeDefinition<CR>
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
