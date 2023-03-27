@@ -101,6 +101,10 @@ set completeopt=menuone,popup
 
 packadd termdebug
 
+if &term == "tmux-256color"
+    set term=xterm-256color
+endif
+
 " Ctrl-H, Ctrl-L: navigate buffers
 " Ctrl-X: delete (close) buffer
 " Ctrl-J: list buffers
