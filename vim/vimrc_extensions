@@ -39,11 +39,34 @@ let g:specegray_underline_search = 1
 let g:spacegray_italicize_comments = 1
 
 let g:airline#extensions#tabline#enabled = 0
-let g:airline_powerline_fonts = 0
-let g:airline_symbols_ascii = 1
-let g:airline_theme='hybrid'
-let g:hybrid_custom_term_colors = 1
-let g:hybrid_reduced_contrast = 0 
+let g:airline_powerline_fonts = 1
+let g:airline_theme='term'
+
+let g:airline_mode_map = {
+      \ '__'     : '-',
+      \ 'c'      : 'C',
+      \ 'i'      : 'I',
+      \ 'ic'     : 'I',
+      \ 'ix'     : 'I',
+      \ 'n'      : 'N',
+      \ 'multi'  : 'M',
+      \ 'ni'     : 'N',
+      \ 'no'     : 'N',
+      \ 'R'      : 'R',
+      \ 'Rv'     : 'R',
+      \ 's'      : 'S',
+      \ 'S'      : 'SL',
+      \ ''     : 'SB',
+      \ 't'      : 'T',
+      \ 'v'      : 'V',
+      \ 'V'      : 'VL',
+      \ ''     : 'VB',
+      \ }
+
+let g:airline_section_b="%<%<%{%airline#extensions#fugitiveline#bufname()%}%#__accent_blue#:%l|%v%#__restore# %m%#__accent_red#%{airline#util#wrap(airline#parts#readonly(),0)}%#__restore__#%#__accent_bold#%#__restore__#%#__accent_bold#%{airline#util#wrap(airline#extensions#lsp#progress(),0)}%#__restore__#"
+let g:airline_section_c="%{airline#util#wrap(airline#extensions#branch#get_head(),80)}"
+let g:airline_section_x="%{airline#util#wrap(airline#parts#filetype(),0)}"
+let g:airline_section_z="%p%%%{g:airline_symbols.maxlinenr}%L"
 
 #ifdef USE_YCM
 let g:ycm_auto_trigger=1
