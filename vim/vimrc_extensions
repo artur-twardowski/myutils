@@ -103,42 +103,41 @@ au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#source
 #endif
 
 " Toggle buffer list on and off
-" F3 - open the buffer list
-" F3 - open the buffer list, close it after picking a position
-nnoremap <F2>            :let g:miniBufExplCloseOnSelect=0<CR>:MBEToggle<CR>:MBEFocus<CR>
-nnoremap <S-F2>          :let g:miniBufExplCloseOnSelect=1<CR>:MBEOpen<CR>:MBEFocus<CR>
-nnoremap <F14>           :let g:miniBufExplCloseOnSelect=1<CR>:MBEOpen<CR>:MBEFocus<CR>
+" Ctrl-Xj - open the buffer list, close it after picking a position
+" Ctrl-XJ - open the buffer list persistently
+nnoremap <C-x>J          :let g:miniBufExplCloseOnSelect=0<CR>:MBEToggle<CR>:MBEFocus<CR>
+nnoremap <C-x>j          :let g:miniBufExplCloseOnSelect=1<CR>:MBEOpen<CR>:MBEFocus<CR>
+nmap <C-x><C-j>          <C-x>j
 
 " Open NERDTree
-nnoremap <F3>            :NERDTreeToggle<CR>
-nnoremap <S-F3>          :NERDTreeToggleVCS<CR>
-nnoremap <F15>           :NERDTreeToggleVCS<CR>
+nnoremap <C-x>f          :NERDTreeToggle<CR>
+nnoremap <C-x>F          :NERDTreeToggleVCS<CR>
+nmap <C-x><C-f>          <C-x>f
 
 " Toggle tagbar on and off
-nnoremap <F4>            :TagbarToggle<CR>
+nnoremap <C-b>t          :TagbarToggle<CR>
 
 #ifdef USE_YCM
-nnoremap <C-k><C-k>      :YcmCompleter GoTo<CR>
-nnoremap <C-k><C-j>      :YcmCompleter GoToReferences<CR>
-nnoremap <C-k><C-d><C-c> :YcmCompleter GoToDeclaration<CR>
-nnoremap <C-k><C-d><C-f> :YcmCompleter GotoDefinition<CR>
-nnoremap <C-k><C-r>      :YcmCompleter RefactorRename 
+nnoremap <C-b>j          :YcmCompleter GoToReferences<CR>
+nnoremap <C-b>d          :YcmCompleter GoToDeclaration<CR>
+nnoremap <C-b>b          :YcmCompleter GotoDefinition<CR>
+nnoremap <C-b>r          :YcmCompleter RefactorRename 
 #endif
 #ifdef USE_LSP
-nnoremap <C-k><C-d>      :LspDeclaration<CR>
-nnoremap <C-k><C-e>      :LspDocumentDiagnostics<CR>
-nnoremap <C-k><C-f>      :LspCodeAction<CR>
-nnoremap <C-k><C-h>      :LspDocumentSwitchSourceHeader<CR>
-nnoremap <C-k><C-i>      :LspImplementation<CR>
-nnoremap <C-k><C-j>      :LspReferences<CR>
-nnoremap <C-k><C-k>      :LspDefinition<CR>
-nnoremap <C-k><C-o>      :LspPeekDeclaration<CR>
-nnoremap <C-k><C-r>      :LspRename<CR>
-nnoremap <C-k><C-t>      :LspPeekTypeDefinition<CR>
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+nnoremap <C-b>b          :LspDefinition<CR>
+nnoremap <C-b>d          :LspDeclaration<CR>
+nnoremap <C-b>i          :LspImplementation<CR>
+nnoremap <C-b>e          :LspDocumentDiagnostics<CR>
+nnoremap <C-b>f          :LspCodeAction<CR>
+nnoremap <C-b>h          :LspDocumentSwitchSourceHeader<CR>
+nnoremap <C-b>j          :LspReferences<CR>
+nnoremap <C-b>o          :LspPeekDeclaration<CR>
+nnoremap <C-b>r          :LspRename<CR>
+inoremap <exbr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 #endif
+nmap <C-b><C-b>      <C-b>b
 
 inoremap <expr> <Up> pumvisible() ? '<C-e><Up>' : '<Up>'
 inoremap <expr> <Down> pumvisible() ? '<C-y><Down>' : '<Down>'

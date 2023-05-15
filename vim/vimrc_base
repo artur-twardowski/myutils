@@ -17,6 +17,7 @@ set showcmd
 set laststatus=2
 set report=0
 set cursorline
+set hlsearch
 
 function! ToggleConceal()
     if &conceallevel == 1
@@ -76,6 +77,50 @@ function! ToggleFolding()
     endif
 endfunction
 
+function! ToggleLineNumbers()
+    if &number
+        if &relativenumber
+            set nonumber
+            set norelativenumber
+            echom "Line numbers disabled"
+        else
+            set relativenumber
+            echom "Line numbers enabled (relative)"
+        endif
+    else
+        set number
+        set norelativenumber
+        echom "Line numbers enabled (absolute)"
+    endif
+endfunction
+
+function! ToggleSigns()
+    if &signcolumn == "no"
+        set signcolumn=auto
+        echom "Signs in gutter enabled if there is anything to show"
+    elseif &signcolumn == "auto"
+        set signcolumn=yes
+        echom "Signs in gutter enabled"
+    elseif &signcolumn == "yes"
+        set signcolumn=no
+        echom "Signs in gutter off"
+    endif
+endfunction
+
+function! YankModeEnable()
+    set signcolumn=no
+    set nonumber
+    set norelativenumber
+    set nolist
+endfunction
+
+function! YankModeDisable()
+    set signcolumn=yes
+    set number
+    set norelativenumber
+    set list
+endfunction
+
 if has("gui_running")
     if has("gui_gtk2") || has("gui_gtk3")
         set guifont=DejaVu\ Sans\ Mono\ 12
@@ -105,40 +150,58 @@ if &term == "tmux-256color"
     set term=xterm-256color
 endif
 
-" Ctrl-H, Ctrl-L: navigate buffers
-" Ctrl-X: delete (close) buffer
-" Ctrl-J: list buffers
-nnoremap <C-h>      :bp<CR>
-nnoremap <C-l>      :bn<CR>
-nnoremap <C-x>      :bd<CR>
-nnoremap <C-j>      :ls<CR>:b
+" Ctrl-J, Ctrl-K: navigate buffers
+" [b, ]b: same as above
+" Ctrl-H, Ctrl-L: navigate tabs
+" [t, ]t: same as above
+nnoremap <C-k>      :bp<CR>
+nnoremap <C-j>      :bn<CR>
+nnoremap <C-h>      :tabprevious<CR>
+nnoremap <C-l>      :tabnext<CR>
+nnoremap [b         :bp<CR>
+nnoremap ]b         :bn<CR>
+nnoremap [t         :tabprevious<CR>
+nnoremap ]t         :tabnext<CR>
 
-" F8: enable/disable presentation of whitespaces
-nnoremap <F8>       :set list!<CR>
+" Ctrl-Xq: close current buffer
+nnoremap <C-x>q     :bd<CR>
+
+" Ctrl-Xn: new buffer
+" Ctrl-XN: new buffer in new tab
+nnoremap <C-x>n     :enew<CR>
+nnoremap <C-x>N     :tabnew<CR>
+
+" Ctrl-Xe: open a file
+" Ctrl-XE: open a file in new tab
+nnoremap <C-x>e     :bro e<CR>
+nnoremap <C-x>E     :tabnew<CR>:bro e<CR>
+
+" Ctrl-XL: enable/disable ligatures
+nnoremap <C-x>L     :call ToggleConceal()<CR>
+
+" Ctrl-Xa: toggle line numbers
+" Ctrl-Xz: toggle signs in gutter
+" Ctrl-Xk: enable/disable presentation of whitespaces
+" Ctrl-Xy: enable yank mode: disable line numbers, signs in gutter and whitespaces
+" Ctrl-XY: disable yank mode: enable line numbers, signs in gutter and whitespaces
+nnoremap <C-x>w     :set list!<CR>
+nnoremap <C-x>a     :call ToggleLineNumbers()<CR>
+nnoremap <C-x>z     :call ToggleSigns()<CR>
+nnoremap <C-x>y     :call YankModeEnable()<CR>
+nnoremap <C-x>Y     :call YankModeDisable()<CR>
+
+" Ctrl-XW: toggle line wrap
+nnoremap <C-x>w     :set wrap!<CR>
+
+" Insert mode Ctrl-W - same as in normal mode (window ops)
+inoremap <C-w>      <C-o><C-w>
 
 " Shift-F8: change folding method
 nnoremap <S-F8>     :call ToggleFolding()<CR>
 nnoremap <F20>      :call ToggleFolding()<CR>
 
-" F9: enable/disable ligatures
-nnoremap <F9>       :call ToggleConceal()<CR>
-
-" Shift-F9: enable/disable ligatures at active line
-nnoremap <S-F9>     :call ToggleConcealCursor()<CR>
-nnoremap <F21>      :call ToggleConcealCursor()<CR>
-
-" F10: enable/disable line numbers
-nnoremap <F10>      :set number!<CR>
-
-" Shift-F10: enable/disable relative line numbers
-nnoremap <S-F10>    :set relativenumber!<CR>
-nnoremap <F22>      :set relativenumber!<CR>
-
 " g-F10: enable/disable highlighting of active line
 nnoremap g<F10>    :set cursorline!<CR>
-
-" F11: enable/disable line wrap
-nnoremap <F11>      :set wrap!<CR>
 
 " Shift-F11: select colored columns
 nnoremap <S-F11>    :set colorcolumn=<C-R>=&colorcolumn<CR>
