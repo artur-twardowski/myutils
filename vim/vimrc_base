@@ -191,7 +191,11 @@ nnoremap <C-x>y     :call YankModeEnable()<CR>
 nnoremap <C-x>Y     :call YankModeDisable()<CR>
 
 " Ctrl-XW: toggle line wrap
-nnoremap <C-x>w     :set wrap!<CR>
+nnoremap <C-x>W     :set wrap!<CR>
+
+nmap <C-x><C-e>     <C-x>e
+nmap <C-x><C-n>     <C-x>n
+nmap <C-x><C-y>     <C-x>y
 
 " Insert mode Ctrl-W - same as in normal mode (window ops)
 inoremap <C-w>      <C-o><C-w>

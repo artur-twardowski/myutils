@@ -133,11 +133,15 @@ nnoremap <C-b>h          :LspDocumentSwitchSourceHeader<CR>
 nnoremap <C-b>j          :LspReferences<CR>
 nnoremap <C-b>o          :LspPeekDeclaration<CR>
 nnoremap <C-b>r          :LspRename<CR>
-inoremap <exbr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 #endif
+
 nmap <C-b><C-b>      <C-b>b
+nmap <C-b><C-d>      <C-b>d
+nmap <C-b><C-j>      <C-b>j
+nmap <C-b><C-r>      <C-b>r
 
 inoremap <expr> <Up> pumvisible() ? '<C-e><Up>' : '<Up>'
 inoremap <expr> <Down> pumvisible() ? '<C-y><Down>' : '<Down>'
