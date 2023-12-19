@@ -138,6 +138,73 @@ if has("gui_running")
     nnoremap <M-F7>        :set guifont=*<CR>
 endif
 
+function! LoadProject()
+    let g:vimproject_file = findfile(".vimproject", ".;")
+    if g:vimproject_file != ""
+        exec "source " . g:vimproject_file
+        let g:vimproject_build_abspath = fnamemodify(g:vimproject_file, ":h") . "/" . g:vimproject_build_directory
+        let g:vimproject_run_abspath = fnamemodify(g:vimproject_file, ":h") .  "/" . g:vimproject_run_directory
+        let l:msg = "Now working on project " . g:vimproject_name . " ("
+        exec "set makeprg=" . g:vimproject_makeprg
+        exec "set colorcolumn=" . g:vimproject_colorcolumn
+        exec "set tabstop=" . g:vimproject_indentation_size
+        exec "set shiftwidth=" . g:vimproject_indentation_size
+        if g:vimproject_indentation_tabs == 1
+            set noexpandtab
+            let l:msg = l:msg . "tabulations, "
+        else
+            set expandtab
+            let l:msg = l:msg . "spaces, "
+        endif
+        let l:msg = l:msg . "indent size: " . g:vimproject_indentation_size . ")"
+        echom l:msg
+    else
+        echom "No project file"
+        let g:vimproject_name = ""
+    endif
+endfunction
+
+function! MakeProject(prompt_args)
+    if g:vimproject_file == ""
+        echom "No active project"
+        return
+    else
+        if a:prompt_args == 1
+            let l:args = input("Execute: " . &makeprg . " ", g:vimproject_makeprg_args)
+        else
+            let l:args = g:vimproject_makeprg_args
+        endif
+        exec "cd " . g:vimproject_build_abspath
+        exec "make " . l:args
+        exec "cd -"
+    endif
+endfunction
+
+function! RunProject(prompt_args)
+    if g:vimproject_file == ""
+        echom "No active project"
+        return
+    else
+        if a:prompt_args == 1
+            let l:args = input("Execute: " . g:vimproject_run_command . " ")
+        else
+            let l:args = ""
+        endif
+        exec "cd " . g:vimproject_run_abspath
+        exec "!" . g:vimproject_run_command . " " . l:args
+        exec "cd -"
+    endif
+endfunction
+
+function! PrintCurrentFilePath()
+    if g:vimproject_file == ""
+        echo expand('%')
+    else
+        echo g:vimproject_name . ": " . expand('%')
+    endif
+endfunction
+
+
 #ifdef NEOVIM
 set completeopt=menuone
 #else
@@ -200,9 +267,20 @@ nmap <C-x><C-y>     <C-x>y
 " Insert mode Ctrl-W - same as in normal mode (window ops)
 inoremap <C-w>      <C-o><C-w>
 
-" Shift-F8: change folding method
-nnoremap <S-F8>     :call ToggleFolding()<CR>
-nnoremap <F20>      :call ToggleFolding()<CR>
+nnoremap <C-x>g     :%!clang-format<CR>
+vnoremap <C-x>g     :!clang-format<CR>
+nnoremap <C-x>b     :call MakeProject(0)<CR>
+nnoremap <C-x>B     :call MakeProject(1)<CR>
+nnoremap <C-x>r     :call RunProject(0)<CR>
+nnoremap <C-x>R     :call RunProject(1)<CR>
+nnoremap <C-x>p     :call LoadProject()<CR>
+nnoremap <C-x>k     :call PrintCurrentFilePath()<CR>
+nnoremap <C-x><C-g> <C-x>g
+vnoremap <C-x><C-g> <C-x>g
+nnoremap <C-x><C-b> <C-x>b
+nnoremap <C-x><C-r> <C-x>r
+nnoremap <C-x><C-p> <C-x>p
+nnoremap <C-x><C-k> <C-x>k
 
 " g-F10: enable/disable highlighting of active line
 nnoremap g<F10>    :set cursorline!<CR>
@@ -254,6 +332,8 @@ nnoremap [q         :cprev<CR>
 nnoremap ]q         :cnext<CR>
 nnoremap [Q         :cfirst<CR>
 nnoremap ]Q         :clast<CR>
+nnoremap [<C-q>     :colder<CR>
+nnoremap ]<C-q>     :cnewer<CR>
 
 " g!: execute a command putting its output into a new buffer
 nnoremap g!         :new \| r!
