@@ -1,0 +1,119 @@
+Ctrl-B + ...:
+    TAB           -
+    Q, Ctrl-Q     -
+    W, Ctrl-W     -
+      Shift-W     -
+    E, Ctrl-E     -
+      Shift-E     -
+    R, Ctrl-R     -
+      Shift-R     -
+    T, Ctrl-T   >>Tagbar: open Tagbar
+      Shift-T     -
+    Y, Ctrl-Y     -
+      Shift-Y     -
+    U, Ctrl-U     -
+      Shift-U     -
+    I, Ctrl-I     -
+      Shift-I     -
+    O, Ctrl-O     -
+      Shift-O     -
+    P, Ctrl-P     -
+      Shift-P     -
+    [             -
+
+    A             -
+       Ctrl-A     -
+      Shift-A     -
+    S, Ctrl-S     -
+      Shift-S     -
+    D, Ctrl-D     -
+      Shift-D     -
+    F, Ctrl-F     -
+      Shift-F     -
+    G, Ctrl-G     -
+      Shift-G     -
+    H, Ctrl-H     -
+      Shift-H     -
+    J, Ctrl-J     -
+      Shift-J     -
+    K, Ctrl-K     -
+      Shift-K     -
+    L, Ctrl-L     -
+      Shift-L     -
+
+    Z             -
+       Ctrl-Z     -
+    X, Ctrl-X     -
+      Shift-X     -
+    C, Ctrl-C     -
+      Shift-C     -
+    V, Ctrl-V     -
+      Shift-V     -
+    B, Ctrl-B     -
+      Shift-B     -
+    N, Ctrl-N     -
+      Shift-N     -
+    M, Ctrl-M     -
+      Shift-M     -
+    /             -
+
+
+Ctrl-X + ...:
+    ! (Shift-1)   Execute a command and place its results into a new buffer
+    TAB           Switch between tabs and spaces
+    Q, Ctrl-Q     Delete current buffer
+    W, Ctrl-W     Enable/disable whitespaces
+      Shift-W     Enable-disable line wrap
+    E, Ctrl-E     Open a file using browser
+      Shift-E     Open a file using browser in new tab
+    R, Ctrl-R     Run the built target without arguments
+      Shift-R     Run the built target with defined arguments
+    T, Ctrl-T     -
+      Shift-T     -
+    Y, Ctrl-Y     Enable terminal copy mode (no line numbers, no signs, no whitespaces)
+      Shift-Y     Disable terminal copy mode and go back to default settings (absolute line numbers, signs, whitespaces)
+    U, Ctrl-U     -
+      Shift-U     -
+    I, Ctrl-I     -
+      Shift-I     -
+    O, Ctrl-O     -
+      Shift-O     -
+    P, Ctrl-P     Load the project configuration
+      Shift-P     -
+    [             Select folding mode (syntax, markers, indentation, manual)
+
+    A             Toggle line numbers (absolute, relative, disabled)
+       Ctrl-A     (Not used, interference with tmux)
+      Shift-A     -
+    S, Ctrl-S     -
+      Shift-S     Apply (source) vimrc
+    D, Ctrl-D     -
+      Shift-D     -
+    F, Ctrl-F   >>NERDTree: Open directory listing at current directory
+      Shift-F   >>NERDTree: Open directory listing at the top level of the repository
+    G, Ctrl-G     Run clang-format (for entire file, or for selected block)
+      Shift-G     -
+    H, Ctrl-H     -
+      Shift-H     Toggle highlighting of current line
+    J, Ctrl-J   >>MiniBufExpl: Open list of buffers and close it after choosing a buffer
+      Shift-J   >>MiniBufExpl: Open list of buffers and keep it opened, close if already open
+    K, Ctrl-K     Display full path to the current file
+      Shift-K     -
+    L, Ctrl-L     Select colored columns
+      Shift-L     Enable/disable ligatures
+
+    Z             Enable/disable signs in gutter
+       Ctrl-Z     (Not used, interference with shell)
+    X, Ctrl-X     -
+      Shift-X     -
+    C, Ctrl-C     Configure project
+      Shift-C     Edit vimrc
+    V, Ctrl-V     -
+      Shift-V     -
+    B, Ctrl-B     Build project with default arguments
+      Shift-B     Build project customizing the arguments
+    N, Ctrl-N     New buffer
+      Shift-N     New buffer in new tab
+    M, Ctrl-M     -
+      Shift-M     -
+    /             Quickfix grep

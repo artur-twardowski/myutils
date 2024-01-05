@@ -19,6 +19,30 @@ set report=0
 set cursorline
 set hlsearch
 
+" Installation of plugins
+filetype off
+call plug#begin()
+Plug 'scrooloose/nerdtree'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/asyncomplete-tags.vim'
+Plug 'prabirshrestha/asyncomplete-buffer.vim'
+Plug 'prabirshrestha/asyncomplete-file.vim'
+Plug 'mattn/vim-lsp-settings'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'fholgado/minibufexpl.vim'
+Plug 'preservim/tagbar'
+Plug 'Yohannfra/Vim-Vim-Project'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+call plug#end()
+filetype plugin indent on
+
+packadd termdebug
+
 function! ToggleConceal()
     if &conceallevel == 1
         set conceallevel=0
@@ -107,36 +131,19 @@ function! ToggleSigns()
     endif
 endfunction
 
-function! YankModeEnable()
+function! SetRawDisplay()
     set signcolumn=no
     set nonumber
     set norelativenumber
     set nolist
 endfunction
 
-function! YankModeDisable()
+function! SetDefaultDisplay()
     set signcolumn=yes
     set number
     set norelativenumber
     set list
 endfunction
-
-if has("gui_running")
-    if has("gui_gtk2") || has("gui_gtk3")
-        set guifont=DejaVu\ Sans\ Mono\ 12
-        set lsp=4
-    elseif has("gui_win32")
-        set guifont=Consolas:h12
-        set lsp=0
-    endif
-    set guioptions-=m
-    set guioptions-=T
-    set guioptions-=r
-
-    nnoremap <F7> :call ChangeLineSpacing(-2)<CR>
-    nnoremap <F8> :call ChangeLineSpacing(2)<CR>
-    nnoremap <M-F7>        :set guifont=*<CR>
-endif
 
 function! LoadProject()
     let g:vimproject_file = findfile(".vimproject", ".;")
@@ -204,100 +211,144 @@ function! PrintCurrentFilePath()
     endif
 endfunction
 
+if has("gui_running")
+    if has("gui_gtk2") || has("gui_gtk3")
+        set guifont=JetBrains\ Mono\ Medium\ 12
+        set lsp=0
+    elseif has("gui_win32")
+        set guifont=JetBrains\ Mono\ Medium:h12
+        set lsp=0
+    endif
+    set guioptions-=m
+    set guioptions-=T
+    set guioptions-=r
+endif
 
-#ifdef NEOVIM
-set completeopt=menuone
-#else
 set completeopt=menuone,popup
-#endif
-
-packadd termdebug
 
 if &term == "tmux-256color"
     set term=xterm-256color
 endif
 
-" Ctrl-J, Ctrl-K: navigate buffers
-" [b, ]b: same as above
-" Ctrl-H, Ctrl-L: navigate tabs
-" [t, ]t: same as above
+" Keys
 nnoremap <C-k>      :bp<CR>
 nnoremap <C-j>      :bn<CR>
 nnoremap <C-h>      :tabprevious<CR>
 nnoremap <C-l>      :tabnext<CR>
-nnoremap [b         :bp<CR>
-nnoremap ]b         :bn<CR>
+
+" Ctrl-B + ...
+nnoremap <C-b>e     :LspDocumentDiagnostics<CR>
+nnoremap <C-b>r     :LspRename<CR>
+nnoremap <C-b>t     :TagbarToggle<CR>
+nnoremap <C-b>i     :LspImplementation<CR>
+nnoremap <C-b>o     :LspPeekDeclaration<CR>
+
+nnoremap <C-b>d     :LspDeclaration<CR>
+nnoremap <C-b>f     :LspCodeAction<CR>
+nnoremap <C-b>h     :LspDocumentSwitchSourceHeader<CR>
+nnoremap <C-b>j     :LspReferences<CR>
+
+nnoremap <C-b>b     :LspDefinition<CR>
+
+nmap     <C-b><C-r>    <C-b>r
+nnoremap <C-b><C-t>    <C-b>t
+nmap     <C-b><C-d>    <C-b>d
+nmap     <C-b><C-j>    <C-b>j
+nmap     <C-b><C-b>    <C-b>b
+
+" Ctrl-X + ...
+nnoremap <C-x>!     :new \| r!
+
+nnoremap <C-x><TAB> :call ToggleExpandtab()<CR>
+nnoremap <C-x>q     :bd<CR>
+nnoremap <C-x>Q     :bd!<CR>
+nnoremap <C-x>w     :set list!<CR>
+nnoremap <C-x>W     :set wrap!<CR>
+nnoremap <C-x>e     :bro e<CR>
+nnoremap <C-x>E     :tabnew<CR>:bro e<CR>
+nnoremap <C-x>r     :call RunProject(0)<CR>
+nnoremap <C-x>R     :call RunProject(1)<CR>
+nnoremap <C-x>y     :call SetRawDisplay()<CR>
+nnoremap <C-x>Y     :call SetDefaultDisplay()<CR>
+"unused  <C-x>u
+"unused  <C-x>U
+"unused  <C-x>i
+"unused  <C-x>I
+"unused  <C-x>o
+"unused  <C-x>O
+nnoremap <C-x>p     :call LoadProject()<CR>
+"unused  <C-x>P
+nnoremap <C-x>[     :call ToggleFolding()<CR>
+
+nnoremap <C-x>a     :call ToggleLineNumbers()<CR>
+"unused  <C-x>A
+"unused  <C-x>s
+nnoremap <C-x>S     :so ~/.vimrc<CR>
+"unused  <C-x>d
+"unused  <C-x>D
+nnoremap <C-x>f     :NERDTreeToggle<CR>
+nnoremap <C-x>F     :NERDTreeToggleVCS<CR>
+nnoremap <C-x>g     :%!clang-format<CR>
+vnoremap <C-x>g     :!clang-format<CR>
+"unused  <C-x>G
+"unused  <C-x>h
+nnoremap <C-x>H     :set cursorline!<CR>
+nnoremap <C-x>j     :let g:miniBufExplCloseOnSelect=1<CR>:MBEOpen<CR>:MBEFocus<CR>
+nnoremap <C-x>J     :let g:miniBufExplCloseOnSelect=0<CR>:MBEToggle<CR>:MBEFocus<CR>
+nnoremap <C-x>k     :call PrintCurrentFilePath()<CR>
+"unused  <C-x>K
+nnoremap <C-x>l     :set colorcolumn=<C-R>=&colorcolumn<CR>
+nnoremap <C-x>L     :call ToggleConceal()<CR>
+
+nnoremap <C-x>z     :call ToggleSigns()<CR>
+"unused  <C-x>Z
+"unused  <C-x>x
+"unused  <C-x>X
+"unused  <C-x>c
+nnoremap <C-x>C     :e ~/.vimrc<CR>
+"unused  <C-x>v
+"unused  <C-x>V
+nnoremap <C-x>b     :call MakeProject(0)<CR>
+nnoremap <C-x>B     :call MakeProject(1)<CR>
+nnoremap <C-x>n     :enew<CR>
+nnoremap <C-x>N     :tabnew<CR>
+"unused  <C-x>m
+"unused  <C-x>M
+nnoremap <C-x>/     :call QuickfixGrep()<CR>
+
+nnoremap [q         :cprev<CR>
+nnoremap ]q         :cnext<CR>
+nnoremap [Q         :cfirst<CR>
+nnoremap ]Q         :clast<CR>
+nnoremap [<C-q>     :colder<CR>
+nnoremap ]<C-q>     :cnewer<CR>
 nnoremap [t         :tabprevious<CR>
 nnoremap ]t         :tabnext<CR>
 
-" Ctrl-Xq: close current buffer
-nnoremap <C-x>q     :bd<CR>
+nnoremap [b         :bp<CR>
+nnoremap ]b         :bn<CR>
 
-" Ctrl-Xn: new buffer
-" Ctrl-XN: new buffer in new tab
-nnoremap <C-x>n     :enew<CR>
-nnoremap <C-x>N     :tabnew<CR>
-
-" Ctrl-Xe: open a file
-" Ctrl-XE: open a file in new tab
-nnoremap <C-x>e     :bro e<CR>
-nnoremap <C-x>E     :tabnew<CR>:bro e<CR>
-
-" Ctrl-XL: enable/disable ligatures
-nnoremap <C-x>L     :call ToggleConceal()<CR>
-
-" Ctrl-Xa: toggle line numbers
-" Ctrl-Xz: toggle signs in gutter
-" Ctrl-Xk: enable/disable presentation of whitespaces
-" Ctrl-Xy: enable yank mode: disable line numbers, signs in gutter and whitespaces
-" Ctrl-XY: disable yank mode: enable line numbers, signs in gutter and whitespaces
-nnoremap <C-x>w     :set list!<CR>
-nnoremap <C-x>a     :call ToggleLineNumbers()<CR>
-nnoremap <C-x>z     :call ToggleSigns()<CR>
-nnoremap <C-x>y     :call YankModeEnable()<CR>
-nnoremap <C-x>Y     :call YankModeDisable()<CR>
-
-" Ctrl-XW: toggle line wrap
-nnoremap <C-x>W     :set wrap!<CR>
-
-nmap <C-x><C-e>     <C-x>e
-nmap <C-x><C-n>     <C-x>n
-nmap <C-x><C-y>     <C-x>y
-
-" Insert mode Ctrl-W - same as in normal mode (window ops)
 inoremap <C-w>      <C-o><C-w>
 
-nnoremap <C-x>g     :%!clang-format<CR>
-vnoremap <C-x>g     :!clang-format<CR>
-nnoremap <C-x>b     :call MakeProject(0)<CR>
-nnoremap <C-x>B     :call MakeProject(1)<CR>
-nnoremap <C-x>r     :call RunProject(0)<CR>
-nnoremap <C-x>R     :call RunProject(1)<CR>
-nnoremap <C-x>p     :call LoadProject()<CR>
-nnoremap <C-x>k     :call PrintCurrentFilePath()<CR>
-nnoremap <C-x><C-g> <C-x>g
-vnoremap <C-x><C-g> <C-x>g
-nnoremap <C-x><C-b> <C-x>b
-nnoremap <C-x><C-r> <C-x>r
-nnoremap <C-x><C-p> <C-x>p
-nnoremap <C-x><C-k> <C-x>k
+nmap     <C-x><C-q>    <C-x>q
+nmap     <C-x><C-w>    <C-x>w
+nmap     <C-x><C-e>    <C-x>e
+nnoremap <C-x><C-r>    <C-x>r
+nmap     <C-x><C-y>    <C-x>y
+nmap     <C-x><C-f>    <C-x>f
+nnoremap <C-x><C-g>    <C-x>g
+vnoremap <C-x><C-g>    <C-x>g
+nmap     <C-x><C-j>    <C-x>j
+nnoremap <C-x><C-k>    <C-x>k
+nnoremap <C-x><C-b>    <C-x>b
+nmap     <C-x><C-n>    <C-x>n
+nnoremap <C-x><C-p>    <C-x>p
 
-" g-F10: enable/disable highlighting of active line
-nnoremap g<F10>    :set cursorline!<CR>
-
-" Shift-F11: select colored columns
-nnoremap <S-F11>    :set colorcolumn=<C-R>=&colorcolumn<CR>
-nnoremap <F23>      :set colorcolumn=<C-R>=&colorcolumn<CR>
-
-" F12: open terminal (Bash)
 nnoremap <F12>      :term bash<CR>
-
-" Shift-F12: open terminal (Bash) leaving Vim in background
 nnoremap <S-F12>    :!bash<CR>
 nnoremap <F24>      :!bash<CR>
 
 " g<TAB>: switch between tabs and spaces
-nnoremap g<TAB>     :call ToggleExpandtab()<CR>
 
 " gc...: various custom ops
 " gca: apply configuration
@@ -314,8 +365,6 @@ nnoremap g<TAB>     :call ToggleExpandtab()<CR>
 " gcxr: hex/binary to raw data (xxd -r)
 " gcxi: raw data to hex, customize command
 "
-nnoremap gca        :so ~/.vimrc<CR>
-nnoremap gce        :e ~/.vimrc<CR>
 nnoremap gco        :colorscheme <C-d>
 noremap  gcds       :!awk '{ s += $1 } END { print s }'<CR>
 noremap  gcdS       :!awk '{ s += $1 } END { print s }'<CR>y$u:echo "Sum = <C-r>""<CR>
@@ -325,21 +374,6 @@ nnoremap gcxx       :%!xxd -g1<CR>
 nnoremap gcxb       :%!xxd -b -g1 -c4<CR>
 nnoremap gcxr       :%!xxd -r<CR>
 nnoremap gcxi       :%!xxd 
-
-" [q, ]q - navigate to previous/next quickfix list item
-" [Q, ]Q - navigate to first/last quickfix list item
-nnoremap [q         :cprev<CR>
-nnoremap ]q         :cnext<CR>
-nnoremap [Q         :cfirst<CR>
-nnoremap ]Q         :clast<CR>
-nnoremap [<C-q>     :colder<CR>
-nnoremap ]<C-q>     :cnewer<CR>
-
-" g!: execute a command putting its output into a new buffer
-nnoremap g!         :new \| r!
-" g/: QuickfixGrep - search for an expression and put the results into a
-" quickfix window
-nnoremap g/         :call QuickfixGrep()<CR>
 
 vnoremap <TAB>      >gv
 vnoremap <S-TAB>    <gv
@@ -358,3 +392,79 @@ vnoremap <S-Left>   <Left>
 vnoremap <S-Right>  <Right>
 map <Down>          gj
 map <Up>            gk
+
+
+if (has("termguicolors"))
+    set termguicolors
+endif
+
+set t_Co=256
+set background=dark
+silent! colorscheme spacegray-mod
+let g:specegray_underline_search = 1
+let g:spacegray_italicize_comments = 1
+
+let g:airline#extensions#tabline#enabled = 0
+let g:airline_powerline_fonts = 1
+let g:airline_theme='term'
+
+let g:airline_mode_map = {
+      \ '__'     : '-',
+      \ 'c'      : 'C',
+      \ 'i'      : 'I',
+      \ 'ic'     : 'IC',
+      \ 'ix'     : 'IX',
+      \ 'n'      : 'N',
+      \ 'multi'  : 'M',
+      \ 'ni'     : 'NI',
+      \ 'no'     : 'NO',
+      \ 'R'      : 'R',
+      \ 'Rv'     : 'RV',
+      \ 's'      : 's',
+      \ 'S'      : 'S',
+      \ ''     : 'SB',
+      \ 't'      : 't',
+      \ 'v'      : 'V',
+      \ 'V'      : 'VL',
+      \ ''     : 'VB',
+      \ }
+
+let g:airline_section_b="%<%<%{bufnr('%')}: %#__restore#%{fnamemodify(expand('%'),':t')}%m%#__accent_red#%{airline#util#wrap(airline#parts#readonly(),0)}%#__restore__#%#__accent_bold#%#__restore__#%#__accent_bold#%{airline#util#wrap(airline#extensions#lsp#progress(),0)}%#__restore__#"
+let g:airline_section_c="%{airline#util#wrap(airline#extensions#branch#get_head(),80)}"
+let g:airline_section_x="%{airline#util#wrap(airline#parts#filetype(),0)}"
+let g:airline_section_z="%l:%v %{g:airline_symbols.maxlinenr}%p%%"
+
+let g:asyncomplete_auto_completeopt = 1
+let g:lsp_diagnostics_echo_cursor = 1
+let g:lsp_diagnostics_echo_delay = 100
+let g:lsp_diagnostics_virtual_text_enabled = 0
+
+let g:miniBufExplVSplit = 30
+let g:miniBufExplAutoStart = 0
+let g:miniBufExplAutoStart = 0
+let g:miniBufExplCloseOnSelect = 0
+
+call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+    \ 'name': 'buffer',
+    \ 'allowlist': ['*'],
+    \ 'blocklist': ['go'],
+    \ 'completor': function('asyncomplete#sources#buffer#completor'),
+    \ 'config': {
+        \    'max_buffer_size': 5000000,
+    \  },
+    \ }))
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+    \ 'name': 'file',
+    \ 'allowlist': ['*'],
+    \ 'priority': 10,
+    \ 'completor': function('asyncomplete#sources#file#completor')
+    \ }))
+
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+
+inoremap <expr> <Up> pumvisible() ? '<C-e><Up>' : '<Up>'
+inoremap <expr> <Down> pumvisible() ? '<C-y><Down>' : '<Down>'
+
