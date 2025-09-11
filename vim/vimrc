@@ -289,7 +289,11 @@ nnoremap <C-x>S     :so ~/.vimrc<CR>
 nnoremap <C-x>f     :NERDTreeToggle<CR>
 nnoremap <C-x>F     :NERDTreeToggleVCS<CR>
 nnoremap <C-x>g     :%!clang-format<CR>
-vnoremap <C-x>g     :!clang-format<CR>
+if has('python')
+  vnoremap <C-x>g :pyf /usr/share/clang/clang-format-18/clang-format.py<cr>
+elseif has('python3')
+  vnoremap <C-x>g :py3f /usr/share/clang/clang-format-18/clang-format.py<cr>
+endif
 "unused  <C-x>G
 "unused  <C-x>h
 nnoremap <C-x>H     :set cursorline!<CR>
